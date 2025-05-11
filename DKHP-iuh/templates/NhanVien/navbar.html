@@ -1,0 +1,75 @@
+<!-- navbar.html -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container">
+        <a href="dashboard.html">
+            <img src="/img/band.png" alt="Banner" width="100" height="50" class="rounded-circle mr-1">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbwTuQZ34oLDTOUIsD9DPk2K0pdiYGbzKJxFYdwZbrxsh4RYngCeH5dr49F0XacGUjHHI&usqp=CAU" alt="User Avatar" width="30" height="30" class="rounded-circle mr-1"> Your Name
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item">Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="login.html" id="logoutButton">Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lấy userID từ localStorage
+        var userID = localStorage.getItem("userID");
+        console.log('>>>', userID);
+
+        if (userID) {
+            // Gửi yêu cầu đến API
+            fetch(`http://localhost:8080/api/v1/staff/search-by-id?id=${userID}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem("token")
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Giả sử API trả về đối tượng chứa thông tin người dùng
+                if (data && data.fullName) {
+                    // Cập nhật phần tử HTML với tên người dùng
+                    var userNameElement = document.querySelector('#navbarDropdown');
+                    userNameElement.innerHTML = `
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbwTuQZ34oLDTOUIsD9DPk2K0pdiYGbzKJxFYdwZbrxsh4RYngCeH5dr49F0XacGUjHHI&usqp=CAU" alt="User Avatar" width="30" height="30" class="rounded-circle mr-1"> ${data.fullName}
+                    `;
+                } else {
+                    console.error('API không trả về dữ liệu người dùng hợp lệ');
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi khi gửi yêu cầu đến API:', error);
+            });
+        } else {
+            console.error('userID không tồn tại trong localStorage');
+        }
+
+        // Xử lý sự kiện click cho nút Logout
+        var logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', function() {
+                // Đặt lại userID trong localStorage
+                localStorage.setItem("userID", "");
+                // Chuyển hướng về trang login.html
+                window.location.href = 'login.html';
+            });
+        }
+    });
+</script>
+    
+    

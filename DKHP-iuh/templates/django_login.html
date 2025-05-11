@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Hệ thống Đăng ký Học phần</title>
+
+    <link rel="shortcut icon" href="https://media.iuh.edu.vn/Media/2_sviuh/Images/icon65d669c1-0-e.ico">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+   
+    <link rel="stylesheet" href="/css/django_login.css">
+    <link rel="stylesheet" href="/css/toast.css">
+
+    <script src="https://kit.fontawesome.com/ba77084f0d.js" crossorigin="anonymous"></script>
+</head>
+<body style="background-color: #e8ecf4;">
+    <div id="toast"></div>
+    <header class="bg-white border-bottom border-2 shadow-sm">
+        <div class="container">
+            <div class="row align-items-center py-1">
+                <div class="col-md-8">
+                    <a class="navbar-brand text-black" href="/"><img
+                            src="https://media.iuh.edu.vn/Media/2_sviuh/Images/iuh7313e0f8-4-e.png"
+                            style="max-height: 40px !important;"></a>
+                </div>
+                <div class="col-md-4">
+                    <nav class="navbar navbar-expand-lg">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item"><a class="nav-link" style="color: #667580; font-size: 12px;" href="/"><i
+                                        class="fa-solid fa-house"></i>Trang chủ</a></li>
+                            <li class="nav-item"><a class="nav-link" style="color: #667580; font-size: 12px;" href="#"><i
+                                        class="fa-solid fa-bell"></i>Tin tức</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h3 class="mb-0">Đăng nhập</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <form method="post" action="/login/">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Tên đăng nhập</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Nhập tên đăng nhập" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Mật khẩu</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" required>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="rememberMe" name="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Ghi nhớ đăng nhập</label>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">Đăng nhập</button>
+                            </div>
+                        </form>
+                        <div class="mt-3 text-center">
+                            <a href="/forgot-password/" class="text-decoration-none">Quên mật khẩu?</a>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <p class="mb-0">Chưa có tài khoản? <a href="/register/" class="text-decoration-none">Đăng ký ngay</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <p class="mb-0">&copy; 2024 Trường Đại học Công nghiệp TP. Hồ Chí Minh. Tất cả các quyền được bảo lưu.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    </script>
+</body>
+</html> 
